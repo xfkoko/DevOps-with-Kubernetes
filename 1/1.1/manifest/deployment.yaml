@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-output-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logoutputter
+  template:
+    metadata:
+      labels:
+        app: logoutputter
+    spec:
+      containers:
+        - name: logoutputter
+          image: kostikorhonen/logoutputter:latest
