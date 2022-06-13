@@ -1,0 +1,12 @@
+{
+    "name": "log-output",
+    "version": "1.0.0",
+    "description": "Outputs random string and timestamp every 5 seconds.",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "author": "Kosti Korhonen",
+    "license": "ISC",
+    "dependencies": {}
+}
