@@ -1,0 +1,12 @@
+{
+    "name": "project",
+    "version": "0.3.0",
+    "description": "Creates a server.",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "author": "Kosti Korhonen",
+    "license": "ISC",
+    "dependencies": {}
+}
