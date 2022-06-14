@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pong-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /pong
+        pathType: Prefix
+        backend:
+          service:
+            name: pong-svc
+            port:
+              number: 2346
