@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: write-read-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: write-read
+  template:
+    metadata:
+      labels:
+        app: write-read
+    spec:
+      volumes:
+        - name: shared-file
+          persistentVolumeClaim:
+            claimName: write-read-claim
+      containers:
+        - name: reader
+          image: kostikorhonen/reader:latest
+          volumeMounts:
+          - name: shared-file
+            mountPath: /usr/src/app/files
+        - name: writer
+          image: kostikorhonen/writer:latest
+          volumeMounts:
+          - name: shared-file
+            mountPath: /usr/src/app/files
