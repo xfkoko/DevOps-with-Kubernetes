@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: img-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: img
+  template:
+    metadata:
+      labels:
+        app: img
+    spec:
+      volumes:
+        - name: shared-file
+          persistentVolumeClaim:
+            claimName: img-claim
+      containers:
+        - name: imger
+          image: kostikorhonen/imger:latest
+          volumeMounts:
+          - name: shared-file
+            mountPath: /usr/src/app/files

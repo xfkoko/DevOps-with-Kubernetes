@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <script>
+        function myFunction() {
+            event.preventDefault();
+            console.log("hello");
+            var list = document.getElementById("list");
+            var listItem = document.createElement("li");
+            var inputItem = this.inputItem;
+            listItem.innerText = inputItem.value;
+            list.appendChild(listItem);
+            return false;
+        }
+        </script>
+  </head>
+  <body>
+    <img src="./img" alt="Daily picture">
+
+    <h1>To-Do List</h1>
+
+    <form onsubmit="myFunction()" id="form1" data-list="list">
+        <input type="text" id="inputItem" placeholder="Enter a Task" maxlength="140">
+        <input type="submit" value="Create TODO">
+    </form>
+    <ul id="list">
+        <li>TODO 1</li>
+        <li>TODO 2</li>
+        <li>TODO 3</li>
+    </ul>
+  </body>
+</html>
