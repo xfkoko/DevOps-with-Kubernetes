@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: write-read-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: write-read
+  template:
+    metadata:
+      labels:
+        app: write-read
+    spec:
+      containers:
+        - name: reader
+          image: kostikorhonen/reader:latest
+        - name: writer
+          image: kostikorhonen/writer:latest
