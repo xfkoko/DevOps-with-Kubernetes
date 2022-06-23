@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-dep
+  namespace: todo-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo
+  template:
+    metadata:
+      labels:
+        app: todo
+    spec:
+      containers:
+        - name: front
+          image: kostikorhonen/front:latest
+        - name: back
+          image: kostikorhonen/back:latest
