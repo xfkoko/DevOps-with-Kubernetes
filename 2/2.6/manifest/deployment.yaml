@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ping-pong-namespace
+  name: write-read-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: write-read
+  template:
+    metadata:
+      labels:
+        app: write-read
+    spec:
+      containers:
+        - name: reader
+          image: kostikorhonen/reader:latest
+          env:
+            - name: HELLO_MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: hello-cm
+                  key: MESSAGE
+        - name: writer
+          image: kostikorhonen/writer:latest
