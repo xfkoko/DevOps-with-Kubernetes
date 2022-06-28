@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: wiki
+  namespace: ping-pong-namespace
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: wiki
+            image: kostikorhonen/wiki:latest
+          restartPolicy: Never
