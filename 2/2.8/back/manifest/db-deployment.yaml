@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ping-pong-namespace
+  name: ping-pong-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ping-pong
+  template:
+    metadata:
+      labels:
+        app: ping-pong
+    spec:
+      containers:
+        - name: ping-pong
+          image: kostikorhonen/back:latest
+          envFrom:
+            - secretRef:
+                name: dbpw
+          env:
+            - name: DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: dbpw
+                  key: POSTGRES_PASSWORD
