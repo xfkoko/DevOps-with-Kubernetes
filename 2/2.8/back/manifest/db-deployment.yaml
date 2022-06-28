@@ -25,3 +25,11 @@ spec:
                 secretKeyRef:
                   name: dbpw
                   key: POSTGRES_PASSWORD
+            - name: DBUSER
+              value: "postgres"
+            - name: DBHOST
+              value: "postgres-svc"
+            - name: DBDB
+              value: "postgres"
+            - name: DBPORT
+              value: "5432"

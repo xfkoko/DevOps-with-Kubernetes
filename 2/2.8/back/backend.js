@@ -17,9 +17,9 @@ const { Client } = require('pg');
 const passw = process.env.POSTGRES_PASSWORD.toString()
 
 const client = new Client({
-    host: 'postgres-svc',
-    user: 'postgres',
-    database: 'postgres',
+    host: process.env.DBHOST,
+    user: process.env.DBUSER,
+    database: process.env.DBDB,
     password: passw,
     port: 5432,
 });
