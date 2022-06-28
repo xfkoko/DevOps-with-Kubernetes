@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: ping-pong-namespace
+  name: log-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-dep
+  template:
+    metadata:
+      labels:
+        app: log-dep
+    spec:
+      containers:
+        - name: log
+          image: kostikorhonen/front:latest
