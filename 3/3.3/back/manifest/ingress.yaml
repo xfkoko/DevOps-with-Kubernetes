@@ -4,7 +4,6 @@ metadata:
   name: ping-pong-ing
 spec:
   rules:
-  - host: localhost
     http:
       paths:
       - path: /
