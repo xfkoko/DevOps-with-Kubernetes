@@ -7,7 +7,9 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: dwk-cluster
   GKE_ZONE: europe-north1-b
-  IMAGE: dwk-environments
+  FRON_IMAGE: dwk-front
+  BACK_IMAGE: dwk-back
+  WIKI_IMAGE: dwk.wiki
 jobs:
   build-publish-deploy:
     name: Build, Publish and Deploy
@@ -30,18 +32,38 @@ jobs:
       - name: Build
         run: |-
           docker build \
-            --tag "gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
-            .
+            --tag "gcr.io/$PROJECT_ID/$FRONT_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
+            ./3/3.3/front
+        run: |-
+          docker build \
+            --tag "gcr.io/$PROJECT_ID/$BACK_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
+            ./3/3.3/back
+        run: |-
+          docker build \
+            --tag "gcr.io/$PROJECT_ID/$WIKI_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
+            ./3/3.3/wiki
+
       - name: Publish
         run: |-
           docker push "gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
 
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v1
+
       - name: Deploy
         run: |-
-          kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
-          kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment $IMAGE
+          kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$FRONT_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
+          kustomize build ./3/3.3/front | kubectl apply -f -
+          kubectl rollout status deployment $FRONT_IMAGE
+          kubectl get services -o wide
+        run: |-
+          kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$BACK_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
+          kustomize build ./3/3.3/back | kubectl apply -f -
+          kubectl rollout status deployment $BACK_IMAGE
+          kubectl get services -o wide
+        run: |-
+          kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$WIKI_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
+          kustomize build ./3/3.3/wiki | kubectl apply -f -
+          kubectl rollout status deployment $WIKI_IMAGE
           kubectl get services -o wide
 
