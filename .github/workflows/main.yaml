@@ -9,6 +9,7 @@ env:
   GKE_ZONE: europe-north1-b
   FRONT_IMAGE: log-dep
   BACK_IMAGE: ping-pong-dep
+
 jobs:
   build-publish-deploy:
     name: Build, Publish and Deploy
