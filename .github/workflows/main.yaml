@@ -32,7 +32,7 @@ jobs:
       - name: Build front
         run: |-
           docker build \
-            --tag "gcr.io/PROJECT_ID/$FRONT_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
+            --tag "gcr.io/$PROJECT_ID/$FRONT_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
             ./3/3.3/front
       - name: Build back
         run: |-
