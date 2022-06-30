@@ -4,12 +4,12 @@ on:
   push:
 
 env:
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: the-pulsar-354711 #${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: dwk-cluster
   GKE_ZONE: europe-north1-b
   FRON_IMAGE: dwk-front
   BACK_IMAGE: dwk-back
-  WIKI_IMAGE: dwk.wiki
+  WIKI_IMAGE: dwk-wiki
 jobs:
   build-publish-deploy:
     name: Build, Publish and Deploy
