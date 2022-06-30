@@ -63,6 +63,6 @@ jobs:
           cd 3/3.3/back
           kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$BACK_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment $BACK_IMAGE
+        #  kubectl rollout status deployment $BACK_IMAGE
           kubectl get services -o wide
 
