@@ -1,0 +1,32 @@
+name: Delete Environment (default settings)
+
+on:
+  delete:
+    branches-ignore:
+      - main
+      - master
+
+env:
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: europe-north1-b
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DSet up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@main'
+        with:
+          project_id: ${{ secrets.GKE_PROJECT }}
+          service_account_key: ${{ secrets.GKE_SA_KEY }}
+          export_default_credentials: true
+
+      - run: gcloud --quiet auth configure-docker
+
+      - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+
+      - name: Deleta everything under namespace
+        run: |-
+          kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
+          kubectl delete all --all
+      
