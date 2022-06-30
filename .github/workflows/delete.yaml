@@ -27,6 +27,5 @@ jobs:
 
       - name: Deleta everything under namespace
         run: |-
-          kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
-          kubectl delete all --all
+          kubectl delete namespace ${{ github.event.ref }}
       
