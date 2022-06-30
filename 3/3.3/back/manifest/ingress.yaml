@@ -18,6 +18,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: pong-db-svc
+            name: ping-pong-svc
             port:
               number: 2346

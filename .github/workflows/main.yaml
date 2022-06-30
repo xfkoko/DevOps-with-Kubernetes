@@ -9,7 +9,6 @@ env:
   GKE_ZONE: europe-north1-b
   FRONT_IMAGE: log-dep
   BACK_IMAGE: ping-pong-dep
-  WIKI_IMAGE: wiki
 jobs:
   build-publish-deploy:
     name: Build, Publish and Deploy
@@ -39,11 +38,6 @@ jobs:
           docker build \
             --tag "gcr.io/$PROJECT_ID/$BACK_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
             ./3/3.3/back
-      - name: Build wiki
-        run: |-
-          docker build \
-            --tag "gcr.io/$PROJECT_ID/$WIKI_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
-            ./3/3.3/wiki
 
       - name: Publish front
         run: |-
@@ -51,9 +45,6 @@ jobs:
       - name: Publish back
         run: |-
           docker push "gcr.io/$PROJECT_ID/$BACK_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
-      - name: Publish wiki
-        run: |-
-          docker push "gcr.io/$PROJECT_ID/$WIKI_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
 
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v1
@@ -71,12 +62,5 @@ jobs:
           kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$BACK_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment $BACK_IMAGE
-          kubectl get services -o wide
-      - name: Deploy wiki
-        run: |-
-          cd 3/3.3/wiki
-          kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$WIKI_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
-          kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment $WIKI_IMAGE
           kubectl get services -o wide
 
