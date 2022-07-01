@@ -15,6 +15,10 @@ spec:
       containers:
         - name: ping-pong
           image: kostikorhonen/back:latest
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "150Mi"
           envFrom:
             - secretRef:
                 name: dbpw
