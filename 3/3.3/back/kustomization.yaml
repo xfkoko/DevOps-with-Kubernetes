@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - ./manifest/db-deployment.yaml
   - ./manifest/db-service.yaml
-  - ./manifest/db-persistentvolumeclaim.yaml
   - ./manifest/ingress.yaml
   - ./manifest/postgres-service.yaml
   - ./manifest/postgres-statefulset.yaml

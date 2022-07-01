@@ -12,10 +12,6 @@ spec:
       labels:
         app: ping-pong
     spec:
-      volumes:
-        - name: db-data
-          persistentVolumeClaim:
-            claimName: db-claim
       containers:
         - name: ping-pong
           image: kostikorhonen/back:latest
