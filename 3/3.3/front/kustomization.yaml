@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - ./manifest/deployment.yaml
   - ./manifest/service.yaml
+  - ./manifest/horizontalpodautoscaler.yaml
