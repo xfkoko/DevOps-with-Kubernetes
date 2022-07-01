@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-dep
+  template:
+    metadata:
+      labels:
+        app: log-dep
+    spec:
+      containers:
+        - name: log
+          image: kostikorhonen/log:latest
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "150Mi"
