@@ -4,7 +4,7 @@ metadata:
   name: db-claim
 spec:
   storageClassName: manual
-    accessModes:
+  accessModes:
     - ReadWriteOnce
   resources:
     requests:
