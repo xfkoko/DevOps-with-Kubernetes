@@ -7,4 +7,3 @@ resources:
   - ./manifest/ingress.yaml
   - ./manifest/postgres-service.yaml
   - ./manifest/postgres-statefulset.yaml
-  
