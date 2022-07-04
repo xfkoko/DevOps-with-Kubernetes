@@ -83,6 +83,7 @@ app.get("/healthz", (req, res) => {
     request("http://ping-pong-svc:2346/healthz", function (err, response, body) {
         if (err) {
             console.log("Health check failed");
+            console.log(err);
             res.status(500);
             res.send("Failed the health check");
         } else {
