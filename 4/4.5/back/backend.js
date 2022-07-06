@@ -26,6 +26,7 @@ const qcall = async (query) => {
         await client.query(query, (err, res) => {
             if (err) {
                 console.log("Error from qcall query");
+                console.log(err);
                 return false;
             } else {
                 return true;
@@ -43,12 +44,13 @@ const initialize = async () => {
     
         qcall(`
         CREATE TABLE IF NOT EXISTS todos (
-            content VARCHAR(200)
+            content VARCHAR(200),
+            done NUMERIC(1)
         );`).then(result => {
             console.log("result:", result);
             if (result) {
                 console.log("Table created!")
-                qcall(`INSERT INTO todos (content) VALUES('TODO 1') ON CONFLICT DO NOTHING;`).then(result => {
+                qcall(`INSERT INTO todos (content, done) VALUES('TODO 1', 0) ON CONFLICT DO NOTHING;`).then(result => {
                     if (result) {
                         console.log("DB Initialized")
                     }
@@ -93,7 +95,7 @@ app.get('/back', (req, res) => {
 
 app.get('/todos', (req, res) => {
   console.log("DB fetch for all todos called")
-  const q = "SELECT content FROM todos;";
+  const q = "SELECT content FROM todos WHERE done=0;";
   client.query(q, (e, r) => {
       if (e) throw e;
       var todosArray = r.rows;
@@ -106,6 +108,21 @@ app.get('/todos', (req, res) => {
   );
 })
 
+app.get('/todosdone', (req, res) => {
+    console.log("DB fetch for all done todos called")
+    const q = "SELECT content FROM todos WHERE done=1;";
+    client.query(q, (e, r) => {
+        if (e) throw e;
+        var todosArray = r.rows;
+        var finalTodos = [];
+        todosArray.forEach(function (item, index) {
+          finalTodos.push(item.content);
+        })
+        res.send(finalTodos);
+        }   
+    );
+  })
+
 app.get("/healthz", (req, res) => {
     if (!healthy) {
         console.log("Health check called");
@@ -113,7 +130,7 @@ app.get("/healthz", (req, res) => {
         client.query(`
         CREATE TABLE IF NOT EXISTS todos (
             content VARCHAR(200),
-            done NUMBER(1)
+            done NUMERIC(1)
         );`, (e, r) => {
             if (e) {
                 console.log("Error in health check");
@@ -164,17 +181,17 @@ app.post("/todo", jsonParser, (req, res) => {
 })
 
 app.put("/todos/*", (req, res) => {
-    var id = req.url.slice(7);
+    var id = req.url.slice(7).replace('%20', ' ');
     console.log("put id:", id);
-    qcall(`UPDATE todos SET done = 1 WHERE content=` + id).then( result => {
-        if (result) {
-            console.log("result = true: UPDATE ok");
-            res.status(200);
-            res.send("UPDATE OK");
-        } else {
-            console.log("result = false: UPDATE not ok");
+    client.query(`UPDATE todos SET done = 1 WHERE content='` + id + `';`, (e, r) => {
+        if (e || r.rowCount == 0) {
+            console.log("Error: UPDATE not ok or nothing to update");
             res.status(500);
             res.send("UPDATE not OK");
+        } else {
+            console.log("UPDATE ok");
+            res.status(200);
+            res.send("UPDATE OK");
         }
     });
 

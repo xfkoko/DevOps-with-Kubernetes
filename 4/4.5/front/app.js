@@ -78,6 +78,19 @@ app.get('/gettodos', (req, res) => {
     });
 });
 
+app.get('/gettodosdone', (req, res) => {
+    console.log("Getting done todos");
+    request("http://ping-pong-svc:2346/todosdone", function (err, response, body) {
+        if (err) {
+            console.log("Failed to do something")
+            return res.end("Failed to do something");
+        }
+        res.statusCode == 200;
+        res.setHeader("Content-Type", "text/plain");
+        res.send({body});
+    });
+});
+
 app.get("/healthz", (req, res) => {
     console.log("Health check pong connection");
     request("http://ping-pong-svc:2346/healthz", function (err, response, body) {
@@ -95,7 +108,7 @@ app.get("/healthz", (req, res) => {
 });
 
 app.get("/putdone/*", (req, res) => {
-    var id = req.url.slice(9);
+    var id = req.url.slice(9).replace('%20', ' ');
     console.log("putdone id:", id);
     request.put("http://ping-pong-svc:2346/todos/" + id, function (err, response, body) {
         if (err) {
@@ -107,12 +120,14 @@ app.get("/putdone/*", (req, res) => {
             console.log("No error");
             if (response.statusCode == 200) {
                 console.log("UPDATE OK");
-                res.status(500);
-                res.send("UPDATE OK");
+                res.status(200);
+                res.setHeader("Content-type", "application/json");
+                res.end(JSON.stringify({info: id}));
             } else {
                 console.log("UPDATE not OK");
                 res.status(500);
-                res.send("UPDATE not OK");
+                res.setHeader("Content-type", "application/json");
+                res.end(JSON.stringify({info: id}));
             }
         }
     });
