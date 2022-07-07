@@ -33,12 +33,12 @@ jobs:
         run: |-
           docker build \
             --tag "gcr.io/$PROJECT_ID/$FRONT_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
-            ./4/4.5/front
+            ./4/4.6/front
       - name: Build back
         run: |-
           docker build \
             --tag "gcr.io/$PROJECT_ID/$BACK_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
-            ./4/4.5/back
+            ./4/4.6/back
 
       - name: Publish front
         run: |-
@@ -52,7 +52,7 @@ jobs:
 
       - name: Deploy back
         run: |-
-          cd 4/4.5/back
+          cd 4/4.6/back
           kubectl create namespace ${GITHUB_REF#refs/heads/} || true
           kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
           kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$BACK_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
@@ -60,7 +60,7 @@ jobs:
           kubectl get services -o wide
       - name: Deploy front
         run: |-
-          cd 4/4.5/front
+          cd 4/4.6/front
           kustomize edit set image gcr.io/PROJECT_ID/IMAGE=gcr.io/$PROJECT_ID/$FRONT_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment $FRONT_IMAGE
