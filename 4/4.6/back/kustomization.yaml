@@ -8,4 +8,4 @@ resources:
   - ./manifest/postgres-statefulset.yaml
   - ./manifest/rollout.yaml
   - ./manifest/analysis.yaml
-  - ../broadcaster/manifest/deployment.yaml
+  - ./manifest/broadcaster-deployment.yaml
