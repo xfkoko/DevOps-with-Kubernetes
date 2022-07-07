@@ -1,7 +1,7 @@
 const NATS = require('nats');
 const request = require("request");
 const nc = NATS.connect({
-    url: process.env.NATS_URL || 'nats://nats:4222'
+    url: 'nats://my-nats:4222'
 });
 
 setTimeout(function(){console.log(":)");}, 2000);
