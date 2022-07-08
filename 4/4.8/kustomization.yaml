@@ -12,4 +12,3 @@ resources:
   - ./front/manifest/deployment.yaml
   - ./front/manifest/service.yaml
   - ./front/manifest/horizontalpodautoscaler.yaml
-  
