@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: cpu-usage-rate
+spec:
+  metrics:
+    - name: cpu-usage-rate
+      initialDelay: 5m
+      interval: 60s
+      count: 10
+      successCondition: result < 100
+      provider:
+        prometheus:
+          address: http://kube-prometheus-stack-1657-prometheus-0.prometheus.svc:9090 # DNS name for my Prometheus, find yours with kubectl describe svc ...
+          query: |
+            scalar(sum(rate(node_cpu_seconds_total{namespace="master"}[5m]))/sum(machine_cpu_cores))*100

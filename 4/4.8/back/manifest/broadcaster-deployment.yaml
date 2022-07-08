@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saver-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: saver
+  template:
+    metadata:
+      labels:
+        app: saver
+    spec:
+      containers:
+        - name: saver
+          image: kostikorhonen/broad:latest
+          env:
+            - name: NATS_URL
+              value: nats://my-nats:4222
+            - name: BOTPASS
+              valueFrom:
+                secretKeyRef:
+                  name: botpass
+                  key: BOT_PASS

@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./manifest/db-service.yaml
+  - ./manifest/horizontalpodautoscaler.yaml
+  - ./manifest/ingress.yaml
+  - ./manifest/postgres-service.yaml
+  - ./manifest/postgres-statefulset.yaml
+  - ./manifest/rollout.yaml
+  - ./manifest/analysis.yaml
+  - ./manifest/broadcaster-deployment.yaml

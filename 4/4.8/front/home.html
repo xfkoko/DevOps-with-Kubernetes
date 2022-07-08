@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <script src="./home.js"></script>
+    <script type = "text/javascript">  
+      window.onload = function(){  
+        getBoth();
+      }  
+    </script>
+  </head>
+  <body>
+    <img src="./img" alt="Daily picture">
+
+    <h1>To-Do List</h1>
+
+    <form onsubmit="postTodo()" id="form1" data-list="list">
+        <input type="text" id="inputItem" placeholder="Enter a Task" maxlength="140">
+        <input type="submit" value="Create TODO">
+    </form>
+    <form onsubmit="putTodo()" id="form2" data-list="list2">
+      <input type="text" id="inputItem2" placeholder="Enter a Task" maxlength="140">
+      <input type="submit" value="Mark as DONE">
+  </form>
+    <ul id="list">
+    </ul>
+    <ul id="list2">
+    </ul>
+  </body>
+</html>
