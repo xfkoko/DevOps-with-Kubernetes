@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saver-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: saver
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: saver
+    spec:
+      containers:
+      - env:
+        - name: NATS_URL
+          value: nats://my-nats:4222
+        - name: BOTPASS
+          valueFrom:
+            secretKeyRef:
+              key: BOT_PASS
+              name: botpass
+        image: kostikorhonen/broad:latest
+        name: saver

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-dep
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: log-dep
+    spec:
+      containers:
+      - image: kostikorhonen/front:latest
+        name: log
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 3002
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        resources:
+          limits:
+            cpu: 100m
+            memory: 150Mi
