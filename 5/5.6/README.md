@@ -35,6 +35,7 @@ Knative: Used to setup serverless platform in part 5
 * Linkerd: Used as a service mesh in part 5
 
 ## Service Proxy
+* Contour: Used in part 5 as a networking layer for Knative
 * NGINX: Used at the background as a base on some images used in this course
 
 ## Coordination & Service Discovery
